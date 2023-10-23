@@ -4,10 +4,8 @@ public class Key_Expansion {
 
     public static int shift(int w) { //八位w
         int w_next;
-        //交换w左右格位
-        int highNibble = (w & 0xF0) >> 4;
-        int lowNibble = w & 0x0F;
-        w_next = (highNibble << 4) | lowNibble;
+        //交换w左右格位置
+        w_next = (w & 0x0F) << 4 | (w & 0xF0) >> 4;
         return w_next;
     }
 
