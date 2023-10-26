@@ -42,6 +42,6 @@ public class Key_Expansion {
         roundKeys[3] = roundKeys[1] ^ roundKeys[2];
         roundKeys[4] = roundKeys[2] ^ g2(roundKeys[3]);
         roundKeys[5] = roundKeys[3] ^ roundKeys[4];
-        return roundKeys;
+        return roundKeys;//每两个八位二进制数组成一轮密钥
     }
 }
