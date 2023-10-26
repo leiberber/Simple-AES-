@@ -28,7 +28,18 @@ public class test {
         // System.out.println(b);
         // System.out.println(Round_Function.Column_Confusion_1(b));
 
-        //测试第一轮加密
-        
+        //测试加密  结果好像不太对
+        String PlainText = "0110111101101011";
+        String Key = "1010011100111011"; 
+        System.out.println("明文："+PlainText);
+        System.out.println("密文：" + Key);
+        String result = Cipher.cipher(PlainText, Key);
+        System.out.println("加密结果：" + result);
+        String add = Round_Key_Addition.key_addition(PlainText, Key);
+        System.out.println("密钥加：" + add);
+        String r1 = Cipher.Round_1(add, Key);
+        System.out.println("第一轮加密结果：" + r1);
+        String r2 = Cipher.Round_2(r1, Key);
+        System.out.println("第二轮加密结果：" + r2);
     }
 }

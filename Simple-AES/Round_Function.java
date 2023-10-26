@@ -1,43 +1,38 @@
 public class Round_Function {   //第一轮轮密钥
-    public static String Half_Byte_Replace(String a){    //a是16位二进制数  D2.2半字节代替
-        String k = bin2hex(a); //转换为4位16进制数
-        String C = k.substring(0,2);
-        String D = k.substring(2,4);
-        Integer Ci = Integer.parseInt(C,16);
-        Integer Di = Integer.parseInt(D,16);
-        int c = Ci.intValue();
-        int d = Di.intValue();
-        int c2 = S_Box.s_box(c);
-        int d2 = S_Box.s_box(d);
-        StringBuffer out = new StringBuffer();
-        out.append(c2);
-        out.append(d2);
-        return out.toString();  //跑得通，不知道对不对
-    }
-
-    public static String bin2hex(String input) {
-        StringBuilder sb = new StringBuilder();
-        int len = input.length();
-        System.out.println("原数据长度：" + (len / 8) + "字节");
-
-        for (int i = 0; i < len / 4; i++) {
-            //每4个二进制位转换为1个十六进制位
-            String temp = input.substring(i * 4, (i + 1) * 4);
-            int tempInt = Integer.parseInt(temp, 2);
-            String tempHex = Integer.toHexString(tempInt).toUpperCase();
-            sb.append(tempHex);
+    public static String Half_Byte_Replace(String a){    //a是16位二进制数  
+        //提取前后八位转化为字符串
+        String a1 = a.substring(0, 8);
+        String a2 = a.substring(8, 16);
+        //转化为数字
+        int a11 = Integer.parseInt(a1, 2);
+        int a22 = Integer.parseInt(a2, 2);
+        //半字节替代
+        int s1= S_Box.s_box(a11);
+        int s2 = S_Box.s_box(a22);
+        //转化为字符串
+        String s11 = Integer.toBinaryString(s1);
+        String s22 = Integer.toBinaryString(s2);
+        //补0
+        while (s11.length() < 8) {
+            s11 = "0" + s11;
         }
-
-        return sb.toString();
+        while (s22.length() < 8) {
+            s22 = "0" + s22;
+        }
+        //拼接
+        String out = s11 + s22;
+        return out;
     }
-
+    
     //行移位，也是逆行位移
     public static String Line_Shift(String a) {
-        String[] a1 = a.split("");
-        String temp = a1[1];
-        a1[1] = a1[3];
-        a1[3] = temp;
-        return a1.toString();
+        String []nibble = new String[4];
+        //提取a的每四位
+        for (int i = 0; i < 4; i++) {
+            nibble[i] = a.substring(i * 4, (i + 1) * 4);
+        }
+        String out = nibble[0] + nibble[2] + nibble[3] + nibble[1];
+        return out;
     }
 
     // 列混淆
@@ -110,50 +105,5 @@ public class Round_Function {   //第一轮轮密钥
             bitMask <<= 1;
         }
         return result & 0x0F; // 确保结果是 4 位
-    }
-
-    //第一轮加密
-    public static String Round_1(String a) {
-        String h = Half_Byte_Replace(a);//半字节代替
-        String l = Line_Shift(h);//行位移
-        String c = Column_Confusion(l);//列混淆
-
-        //获取轮密钥1
-        int Key = 0b0010110101010101;
-        int[] w = Key_Expansion.key_Expansion(Key);
-        String w2 = Integer.toBinaryString(w[2]);
-        String w3 = Integer.toBinaryString(w[3]);
-        while (w2.length() < 8) {//位数不够八位补0 
-            w2 = "0" + w2;
-        }
-        while (w3.length() < 8) {
-            w3 = "0" + w3;
-        }
-        String Key_1 = w2 + w3;
-
-        String out = Round_Key_Addition.key_addition(c, Key_1);
-        return out;
-    }
-    
-    //第二轮加密
-    public static String Round_2(String a) {
-        String h = Half_Byte_Replace(a);//半字节代替
-        String l = Line_Shift(h);//行位移
-
-        //获取轮密钥2
-        int Key = 0b0010110101010101;
-        int[] w = Key_Expansion.key_Expansion(Key);
-        String w4 = Integer.toBinaryString(w[4]);
-        String w5 = Integer.toBinaryString(w[5]);
-        while (w4.length() < 8) {//位数不够八位补0 
-            w4 = "0" + w4;
-        }
-        while (w5.length() < 8) {
-            w5 = "0" + w5;
-        }
-        String Key_2 = w4+w5;
-
-        String out = Round_Key_Addition.key_addition(l,Key_2);
-        return out;
     }
 }
