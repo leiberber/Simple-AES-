@@ -1,6 +1,6 @@
 public class test {
     public static void main(String[] args) {
-        // //测试S-BOX和逆S-BOX
+        // //测试S-BOX和逆S-BOX  没问题
         // int a = 0x8A;
         // int b;
         // b = S_Box.s_box(a);
@@ -8,7 +8,16 @@ public class test {
         // System.out.println(Integer.toHexString(b));
         // System.out.println(Integer.toHexString(S_Box.s_box_1(b)));
 
-        // //测试密钥扩展
+        // //测试半字节替代     没问题
+        // String text = "1000101000011100";
+        // String h = Round_Function.Half_Byte_Replace(text);
+        // String h1 = Round_Function.Half_Byte_Replace_1(h);
+        // //将h,h1输出为十六进制数
+        // System.out.println(text);
+        // System.out.println(h);
+        // System.out.println(h1);
+
+        // //测试密钥扩展   没问题
         // int Key = 0b0010110101010101; // 16位原始密钥2D55,修好了，没问题
         // System.out.println("原始密钥: " + Integer.toHexString(Key));
         // int[] w = Key_Expansion.key_Expansion(Key);
@@ -21,25 +30,21 @@ public class test {
         //     System.out.println("w" + i + ": " + wk);
         // }
 
-        // //测试列混淆和逆列混淆
+        // //测试列混淆和逆列混淆   没问题
         // String a = "0110110001000000";
         // String b = Round_Function.Column_Confusion(a);
         // System.out.println(a);
         // System.out.println(b);
         // System.out.println(Round_Function.Column_Confusion_1(b));
 
-        //测试加密  结果好像不太对
+        //测试加密解密  结果好像不太对
         String PlainText = "0110111101101011";
         String Key = "1010011100111011"; 
         System.out.println("明文："+PlainText);
-        System.out.println("密文：" + Key);
+        System.out.println("密钥：" + Key);
         String result = Cipher.cipher(PlainText, Key);
         System.out.println("加密结果：" + result);
-        String add = Round_Key_Addition.key_addition(PlainText, Key);
-        System.out.println("密钥加：" + add);
-        String r1 = Cipher.Round_1(add, Key);
-        System.out.println("第一轮加密结果：" + r1);
-        String r2 = Cipher.Round_2(r1, Key);
-        System.out.println("第二轮加密结果：" + r2);
+        String decipher = Decipher.decipher(result, Key);
+        System.out.println("解密结果：" + decipher);
     }
 }

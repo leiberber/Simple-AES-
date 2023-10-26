@@ -1,5 +1,5 @@
 public class Round_Function {   //第一轮轮密钥
-    public static String Half_Byte_Replace(String a){    //a是16位二进制数  
+    public static String Half_Byte_Replace(String a) { //a是16位二进制数  
         //提取前后八位转化为字符串
         String a1 = a.substring(0, 8);
         String a2 = a.substring(8, 16);
@@ -7,8 +7,33 @@ public class Round_Function {   //第一轮轮密钥
         int a11 = Integer.parseInt(a1, 2);
         int a22 = Integer.parseInt(a2, 2);
         //半字节替代
-        int s1= S_Box.s_box(a11);
+        int s1 = S_Box.s_box(a11);
         int s2 = S_Box.s_box(a22);
+        //转化为字符串
+        String s11 = Integer.toBinaryString(s1);
+        String s22 = Integer.toBinaryString(s2);
+        //补0
+        while (s11.length() < 8) {
+            s11 = "0" + s11;
+        }
+        while (s22.length() < 8) {
+            s22 = "0" + s22;
+        }
+        //拼接
+        String out = s11 + s22;
+        return out;
+    }
+    
+    public static String Half_Byte_Replace_1(String a){    //a是16位二进制数  
+        //提取前后八位转化为字符串
+        String a1 = a.substring(0, 8);
+        String a2 = a.substring(8, 16);
+        //转化为数字
+        int a11 = Integer.parseInt(a1, 2);
+        int a22 = Integer.parseInt(a2, 2);
+        //半字节替代
+        int s1= S_Box.s_box_1(a11);
+        int s2 = S_Box.s_box_1(a22);
         //转化为字符串
         String s11 = Integer.toBinaryString(s1);
         String s22 = Integer.toBinaryString(s2);
