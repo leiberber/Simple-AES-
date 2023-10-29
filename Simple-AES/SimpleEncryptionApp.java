@@ -67,6 +67,10 @@ public class SimpleEncryptionApp extends JFrame {
         JButton encryptButton = new JButton("加密");
         add(encryptButton, gbc);
 
+        gbc.gridx = 3;
+        JButton CBCencryptButton = new JButton("CBC加密");
+        add(CBCencryptButton, gbc);
+
         gbc.gridx = 0;
         gbc.gridy = 3;
         add(new JLabel("加密后密文:"), gbc);
@@ -88,6 +92,10 @@ public class SimpleEncryptionApp extends JFrame {
         JButton decryptButton = new JButton("解密");
         add(decryptButton, gbc);
 
+        gbc.gridx = 3;
+        JButton CBCdecryptButton = new JButton("CBC解密");
+        add(CBCdecryptButton, gbc);
+
         gbc.gridx = 0;
         gbc.gridy = 5;
         add(new JLabel("解密后明文:"), gbc);
@@ -107,7 +115,7 @@ public class SimpleEncryptionApp extends JFrame {
         gbc.gridy = 6;
         add(attackButton, gbc);
 
-        // 添加结果文本字段
+        // 添加攻击结果文本字段
         JTextArea attackResultField = new JTextArea(10,25);
         gbc.gridx = 1;
         attackResultField.setEditable(false);
@@ -241,19 +249,60 @@ public class SimpleEncryptionApp extends JFrame {
             }
         });
 
+        // CBC加密监听器
+        CBCencryptButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (!(one.isSelected() && option2.isSelected())) {
+                    JOptionPane.showMessageDialog(SimpleEncryptionApp.this, "CBC加密必须使用单密钥和字符串明文。", "错误",
+                            JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                String plaintext = plaintextField.getText();
+                String key = keyField.getText();
+                String cbcCiphertext = ASCII.CBCcipher(plaintext, key); // 执行CBC加密
+                // 显示CBC加密后的密文
+                ciphertextField.setText(cbcCiphertext);
+            }
+        });
+
+        // CBC解密监听器
+        CBCdecryptButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (!(one.isSelected() && option2.isSelected())) {
+                    JOptionPane.showMessageDialog(SimpleEncryptionApp.this, "CBC解密必须使用单密钥和字符串明文。", "错误",
+                            JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                String cbcCiphertext = ciphertextField.getText();
+                String decryptKey = decryptKeyField.getText();
+                String decryptedText = ASCII.CBCdecipher(cbcCiphertext, decryptKey); // 执行CBC解密
+
+                // 显示CBC解密后的明文
+                decryptedField.setText(decryptedText);
+            }
+        });
+
         // 攻击监听器
         attackButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if (!(two.isSelected())) {
+                    JOptionPane.showMessageDialog(SimpleEncryptionApp.this, "攻击必须攻击双重加密。", "错误",
+                            JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
                 String plaintext = plaintextField.getText();
                 String ciphertext = ciphertextField.getText();
                 String Keylist = new String();
                 // 调用中间相遇攻击方法，返回密钥或其他结果
                 String[] attackResult = new String[20];
-                if (option1.isSelected()) {
+                if (two.isSelected() && option1.isSelected()) {
                     attackResult = Middle_Attack.attack(plaintext, ciphertext);
                 }
-                else if (option2.isSelected()) {
+                else if (two.isSelected() && option2.isSelected()) {
                     attackResult = Middle_Attack.attackASCII(plaintext, ciphertext);
                 }
                 for (int i = 0; i < attackResult.length; i++) {

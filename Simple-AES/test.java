@@ -54,26 +54,34 @@ public class test {
         // String decipher = Decipher.decipher(result, Key);
         // System.out.println("解密结果：" + decipher);
 
-        //测试中间相遇攻击 //没问题
-        String Key = "10101010101010101111111100000000";
-        String Keylist = new String();
+        //测试CBC加密解密  
+        String PlainText = "abcdefgh";
+        String Key = "1010011100111011"; 
+        System.out.println("明文："+PlainText);
+        System.out.println("密钥：" + Key);
+        String result = ASCII.CBCcipher(PlainText, Key);
+        System.out.println("CBC加密结果：" + result);
+        String decipher = ASCII.CBCdecipher(result, Key);
+        System.out.println("CBC解密结果：" + decipher);
 
-        // String PlainText = "1010101010101010";
-        // String CipherText = Cipher.cipher2(PlainText, Key);
-        // String[] MK = Middle_Attack.attack(PlainText, CipherText);
-
-        String PlainText = "abccbcaa";
-        String CipherText = ASCII.asciiEncipher2(PlainText, Key);
-        String[] Mk = Middle_Attack.attackASCII(PlainText, CipherText);
+        // //测试中间相遇攻击 //没问题
+        // String Key = "10101010101010101111111100000000";
+        // String Keylist = new String();
+        // // String PlainText = "1010101010101010";
+        // // String CipherText = Cipher.cipher2(PlainText, Key);
+        // // String[] MK = Middle_Attack.attack(PlainText, CipherText);
+        // String PlainText = "abccbcaa";
+        // String CipherText = ASCII.asciiEncipher2(PlainText, Key);
+        // String[] Mk = Middle_Attack.attackASCII(PlainText, CipherText);
         
-        for (int i = 0; i < Mk.length; i++) {
-            if (Mk[i] != null) {
-                Keylist += Mk[i] + "\n";
-            }
-        }
-        System.out.println("明文：" + PlainText);
-        System.out.println("加密结果：" + CipherText);
-        System.out.println("密钥： "+ Key);
-        System.out.println("中间相遇攻击： "+Keylist);
+        // for (int i = 0; i < Mk.length; i++) {
+        //     if (Mk[i] != null) {
+        //         Keylist += Mk[i] + "\n";
+        //     }
+        // }
+        // System.out.println("明文：" + PlainText);
+        // System.out.println("加密结果：" + CipherText);
+        // System.out.println("密钥： "+ Key);
+        // System.out.println("中间相遇攻击： "+Keylist);
     }
 }

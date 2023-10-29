@@ -1,4 +1,41 @@
 public class ASCII {
+    static String IV = "1010101010101010";//初始向量
+    //将每个字符串使用CBC分组模式进行加密
+    public static String CBCcipher(String Begin, String Key) { //输入字符串以及16位密钥;
+        int length = Begin.length();
+        StringBuffer out = new StringBuffer();
+        for (int i = 0; i < length; i++) {
+            char change = Begin.charAt(i);
+            int asciiValue = (int) change;
+            String Binary = decimalToBinary(asciiValue);
+            Binary = Round_Key_Addition.key_addition(IV, Binary);//与IV亦或
+            String Binary_en = Cipher.cipher(Binary, Key);
+            IV = Binary_en;//之后与明文亦或的是加密后的结果
+            int DecimalNumber = binaryToDecimal(Binary_en);
+            char decimal = (char) (DecimalNumber);
+            out.append(decimal);
+        }
+        return out.toString();
+    }
+    //CBC模式的解密
+    public static String CBCdecipher(String Begin, String Key) {
+        String IVB = "1010101010101010";
+        int length = Begin.length();
+        StringBuffer out = new StringBuffer();
+        for (int i = 0; i < length; i++) {
+            char change = Begin.charAt(i);
+            int asciiValue = (int) change;
+            String Binary = decimalToBinary(asciiValue);
+            String Binary_en = Decipher.decipher(Binary, Key);
+            Binary_en = Round_Key_Addition.key_addition(IVB, Binary_en);//IVB与解密结果亦或
+            IVB = Binary;//与明文亦或的是上一个密文
+            int DecimalNumber = binaryToDecimal(Binary_en);
+            char decimal = (char) (DecimalNumber);
+            out.append(decimal);
+        }
+        return out.toString();
+    }
+    
     public static String asciiEncipher(String Begin,String Key){  //输入字符串以及16位密钥;
         int length = Begin.length();
         StringBuffer out = new StringBuffer();
@@ -6,9 +43,9 @@ public class ASCII {
             char change = Begin.charAt(i);
             int asciiValue = (int)change;
             String Binary = decimalToBinary(asciiValue);
-            String Binary_en = Cipher.cipher(Binary,Key);
+            String Binary_en = Cipher.cipher(Binary, Key);
             int DecimalNumber = binaryToDecimal(Binary_en);
-            char decimal = (char)(DecimalNumber);
+            char decimal = (char) (DecimalNumber);
             out.append(decimal);
         }
         return out.toString();
@@ -39,7 +76,7 @@ public class ASCII {
             char change = Begin.charAt(i);
             int asciiValue = (int)change;
             String Binary = decimalToBinary(asciiValue);
-            String Binary_en = Decipher.decipher(Binary,Key);
+            String Binary_en = Decipher.decipher(Binary, Key);
             int DecimalNumber = binaryToDecimal(Binary_en);
             char decimal = (char)(DecimalNumber);
             out.append(decimal);
