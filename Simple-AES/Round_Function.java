@@ -50,13 +50,13 @@ public class Round_Function {   //第一轮轮密钥
     }
     
     //行移位，也是逆行位移
-    public static String Line_Shift(String a) {
-        String []nibble = new String[4];
+    public static String Line_Shift(String a) {   //^-^!!
+        String[] nibble = new String[4];
         //提取a的每四位
         for (int i = 0; i < 4; i++) {
             nibble[i] = a.substring(i * 4, (i + 1) * 4);
         }
-        String out = nibble[0] + nibble[2] + nibble[3] + nibble[1];
+        String out = nibble[0] + nibble[3] + nibble[2] + nibble[1];
         return out;
     }
 
