@@ -27,7 +27,7 @@ public class ASCII {
         String key2 = key.substring(16,32);
         String key3 = key.substring(32,48);
         String middle1 = asciiEncipher(input,key1);
-        String middle2 = asciiEncipher(middle1,key2);
+        String middle2 = asciiDecipher(middle1,key2);
         String out = asciiEncipher(middle2,key3);
         return out;
     }
@@ -60,7 +60,7 @@ public class ASCII {
         String key2 = key.substring(16,32);
         String key3 = key.substring(32,48);
         String middle1 = asciiDecipher(input,key3);
-        String middle2 = asciiDecipher(middle1,key2);
+        String middle2 = asciiEncipher(middle1,key2);
         String out = asciiDecipher(middle2,key1);
         return out;
     }

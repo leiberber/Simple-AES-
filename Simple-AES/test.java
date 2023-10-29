@@ -56,9 +56,12 @@ public class test {
 
         //测试中间相遇攻击 //没问题
         String Key = "00000000000000001111111111111111";
-        String PlainText = "1010101010101010";
-        String CipherText = Cipher.cipher2(PlainText, Key);
-        String MK = Middle_Attack.attack(PlainText, CipherText);
+        // String PlainText = "1010101010101010";
+        // String CipherText = Cipher.cipher2(PlainText, Key);
+        // String MK = Middle_Attack.attack(PlainText, CipherText);
+        String PlainText = "abccbcaa";
+        String CipherText = ASCII.asciiEncipher2(PlainText, Key);
+        String MK = Middle_Attack.attackASCII(PlainText, CipherText);
         System.out.println("明文：" + PlainText);
         System.out.println("加密结果：" + CipherText);
         System.out.println("密钥： "+ Key);
