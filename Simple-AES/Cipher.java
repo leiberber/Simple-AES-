@@ -19,7 +19,7 @@ public class Cipher {
         String key2 = key.substring(16,32);
         String key3 = key.substring(32,48);
         String middle1 = cipher(input,key1);
-        String middle2 = cipher(middle1,key2);
+        String middle2 = Decipher.decipher(middle1,key2);
         String out = cipher(middle2,key3);
         return out;
     }

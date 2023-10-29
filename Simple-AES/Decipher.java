@@ -32,7 +32,7 @@ public class Decipher {
         String key2 = key.substring(16,32);
         String key3 = key.substring(32,48);
         String middle1 = decipher(input,key3);
-        String middle2 = decipher(middle1,key2);
+        String middle2 = Cipher.cipher(middle1,key2);
         String out = decipher(middle2,key1);
         return out;
     }
