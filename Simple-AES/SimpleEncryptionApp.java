@@ -14,7 +14,7 @@ public class SimpleEncryptionApp extends JFrame {
     public SimpleEncryptionApp() {
         setTitle("加密解密程序"); // 设置窗口标题
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // 设置窗口关闭时的操作
-        setSize(700, 400); // 设置窗口大小
+        setSize(700, 500); // 设置窗口大小
         setLocationRelativeTo(null); // 设置窗口居中显示
         setLayout(new GridBagLayout()); // 设置布局为网格包布局
         GridBagConstraints gbc = new GridBagConstraints(); // 创建网格包布局的约束对象
@@ -41,7 +41,7 @@ public class SimpleEncryptionApp extends JFrame {
         add(new JLabel("明文:"), gbc); // 添加标签组件到窗口
 
         gbc.gridx = 1; // 更新列索引
-        plaintextField = new JTextField(20); // 创建一个文本框组件
+        plaintextField = new JTextField(25); // 创建一个文本框组件
         add(plaintextField, gbc); // 添加文本框组件到窗口
 
         gbc.gridx = 2;
@@ -60,7 +60,7 @@ public class SimpleEncryptionApp extends JFrame {
         add(new JLabel("密钥（16位二进制数字）:"), gbc);
 
         gbc.gridx = 1;
-        keyField = new JTextField(20);
+        keyField = new JTextField(25);
         add(keyField, gbc);
 
         gbc.gridx = 2;
@@ -72,7 +72,7 @@ public class SimpleEncryptionApp extends JFrame {
         add(new JLabel("加密后密文:"), gbc);
 
         gbc.gridx = 1;
-        ciphertextField = new JTextField(20);
+        ciphertextField = new JTextField(25);
         //ciphertextField.setEditable(false);
         add(ciphertextField, gbc);
 
@@ -81,7 +81,7 @@ public class SimpleEncryptionApp extends JFrame {
         add(new JLabel("解密密钥（16位二进制数字）:"), gbc);
 
         gbc.gridx = 1;
-        decryptKeyField = new JTextField(20);
+        decryptKeyField = new JTextField(25);
         add(decryptKeyField, gbc);
 
         gbc.gridx = 2;
@@ -93,10 +93,25 @@ public class SimpleEncryptionApp extends JFrame {
         add(new JLabel("解密后明文:"), gbc);
 
         gbc.gridx = 1;
-        decryptedField = new JTextField(20);
+        decryptedField = new JTextField(25);
         decryptedField.setEditable(false);
         add(decryptedField, gbc);
+        
+        gbc.gridx = 0;
+        gbc.gridy = 6;
+        add(new JLabel("中间相遇攻击:"), gbc);
 
+        // 添加攻击按钮
+        JButton attackButton = new JButton("执行中间相遇攻击");
+        gbc.gridx = 2;
+        gbc.gridy = 6;
+        add(attackButton, gbc);
+
+        // 添加结果文本字段
+        JTextArea attackResultField = new JTextArea(10,25);
+        gbc.gridx = 1;
+        attackResultField.setEditable(false);
+        add(attackResultField, gbc);
 
         //加密监听器
         encryptButton.addActionListener(new ActionListener() {
@@ -225,8 +240,36 @@ public class SimpleEncryptionApp extends JFrame {
                 decryptedField.setText(decryptedText);
             }
         });
+
+        // 攻击监听器
+        attackButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String plaintext = plaintextField.getText();
+                String ciphertext = ciphertextField.getText();
+                String Keylist = new String();
+                // 调用中间相遇攻击方法，返回密钥或其他结果
+                String[] attackResult = new String[20];
+                if (option1.isSelected()) {
+                    attackResult = Middle_Attack.attack(plaintext, ciphertext);
+                }
+                else if (option2.isSelected()) {
+                    attackResult = Middle_Attack.attackASCII(plaintext, ciphertext);
+                }
+                for (int i = 0; i < attackResult.length; i++) {
+                    if (attackResult[i] != null) {
+                        Keylist += attackResult[i] + "\n";
+                    }
+                }
+                // 显示攻击结果
+                attackResultField.setText(Keylist);
+            }
+        });
+
         setVisible(true);
     }
+
+    
 
     //判断是否是二进制数
     private boolean isBinary(String str) {
