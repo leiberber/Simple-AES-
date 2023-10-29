@@ -6,6 +6,24 @@ public class Cipher {
         return S2;
     }
 
+    public static String cipher2(String input, String key){
+        String key1 = key.substring(0,16);
+        String key2 = key.substring(16,32);
+        String middle = cipher(input,key1);
+        String out = cipher(middle,key2);
+        return out;
+    }
+
+    public static String cipher3(String input, String key){
+        String key1 = key.substring(0,16);
+        String key2 = key.substring(16,32);
+        String key3 = key.substring(32,48);
+        String middle1 = cipher(input,key1);
+        String middle2 = cipher(middle1,key2);
+        String out = cipher(middle2,key3);
+        return out;
+    }
+
 
     //第一轮加密
     public static String Round_1(String a,String Key) {
@@ -18,7 +36,7 @@ public class Cipher {
         int[] w = Key_Expansion.key_Expansion(K);
         String w2 = Integer.toBinaryString(w[2]);
         String w3 = Integer.toBinaryString(w[3]);
-        while (w2.length() < 8) {//位数不够八位补0 
+        while (w2.length() < 8) {//位数不够八位补0
             w2 = "0" + w2;
         }
         while (w3.length() < 8) {
@@ -29,7 +47,7 @@ public class Cipher {
         String out = Round_Key_Addition.key_addition(c, Key_1);
         return out;
     }
-    
+
     //第二轮加密
     public static String Round_2(String a,String Key) {
         String h = Round_Function.Half_Byte_Replace(a);//半字节代替
@@ -40,7 +58,7 @@ public class Cipher {
         int[] w = Key_Expansion.key_Expansion(K);
         String w4 = Integer.toBinaryString(w[4]);
         String w5 = Integer.toBinaryString(w[5]);
-        while (w4.length() < 8) {//位数不够八位补0 
+        while (w4.length() < 8) {//位数不够八位补0
             w4 = "0" + w4;
         }
         while (w5.length() < 8) {
